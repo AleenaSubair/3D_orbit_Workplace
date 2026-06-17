@@ -132,3 +132,6 @@ The compiled APK will be located at:
 1. **Simultaneous Render/Memory Thresholds**: Although resource lifecycle reclaiming is immediate upon closing containers, running more than 3 or 4 simultaneous model instances on older/low-end devices (e.g. less than 3 GB RAM or older OpenGL ES engines) can trigger system-level graphic memory limits or thermal throttling.
 2. **No Remote Assets**: The current application only supports loading 3D assets bundled inside the application assets directory. Direct loading via HTTPS remote URLs is not implemented.
 3. **Overlay Z-Indexing**: When dragging containers, they do not automatically bring themselves to the front layer. The ordering is determined by the creation index in the layout, which could occasionally lead to a container being dragged underneath another unless dynamically reordered.
+
+## A video walkthrough of the App drive link
+1.https://drive.google.com/file/d/1eZcyjXr8FKWzAIsm6zPKyseAY9tXJQqF/view?usp=drive_link
