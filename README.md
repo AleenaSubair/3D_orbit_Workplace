@@ -107,3 +107,28 @@ Navigate to the project directory and run:
 
 The compiled APK will be located at:
 `app/build/outputs/apk/debug/app-debug.apk`
+
+---
+
+## Trade-offs Made
+
+1. **Main Thread Model Loading for Small Assets**: Filament requires asset instantiations to run on a thread adopted by its `JobSystem` (typically the UI/Main thread). For the pre-bundled assets (all < 4.5 MB), we initialized models directly on `Dispatchers.Main`. This kept model loading logic simple and synchronous but would temporarily block the UI thread if loading much larger (> 15 MB) models.
+2. **Fixed 1:1 Aspect Ratio (Square Containers)**: Clamping containers to a strict square aspect ratio simplified the math for layout offsets, bounding checks, and custom pinch-to-scale. However, it prevents displaying models in wider or taller rectangular viewports.
+3. **Translational Coordinate Offsets instead of Window Managers**: We translate standard Android view containers inside a single root RelativeLayout. This keeps layout logic fast and bypasses the overhead of standard window manager transitions, though it restricts the containers to the boundaries of the host activity.
+
+---
+
+## What to Improve with More Time
+
+1. **True Background Asset Parsing**: Offload GLB file reading and parsing to a background thread, passing the constructed binary data or scene-graph components to the UI thread for instantaneous rendering without any frame drops.
+2. **Workspace State Persistence**: Use Room or SharedPreferences to serialize and store active containers (their positions, zoom scales, active model IDs, and modes) so the workspace state persists between application launches.
+3. **Advanced Camera & Lighting Controls**: Add tools to modify Image-Based Lighting (IBL) intensity, environment maps, directional light positions, and shadow map resolutions directly from a dashboard.
+4. **Enhanced Gesture Soft-Limits**: Implement scale and rotation dampening so the 3D model doesn't rotate too fast or zoom in/out past reasonable visual limits.
+
+---
+
+## Known Bugs & Limitations
+
+1. **Simultaneous Render/Memory Thresholds**: Although resource lifecycle reclaiming is immediate upon closing containers, running more than 3 or 4 simultaneous model instances on older/low-end devices (e.g. less than 3 GB RAM or older OpenGL ES engines) can trigger system-level graphic memory limits or thermal throttling.
+2. **No Remote Assets**: The current application only supports loading 3D assets bundled inside the application assets directory. Direct loading via HTTPS remote URLs is not implemented.
+3. **Overlay Z-Indexing**: When dragging containers, they do not automatically bring themselves to the front layer. The ordering is determined by the creation index in the layout, which could occasionally lead to a container being dragged underneath another unless dynamically reordered.
