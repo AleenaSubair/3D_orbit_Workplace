@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/workspace_bg"
+    tools:context=".MainActivity">
+
+    <!-- 3D Canvas occupying the full workspace -->
+    <FrameLayout
+        android:id="@+id/modelCanvas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!-- Premium Top Bar -->
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="#990A0E17"
+        android:paddingHorizontal="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_cube_3d"
+                android:contentDescription="Logo" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Orbit3D Workspace"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Multi-Model Editor"
+                    android:textColor="#80FFFFFF"
+                    android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Toggle Library button -->
+            <Button
+                android:id="@+id/btnToggleDashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Library"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/button_secondary"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Clear canvas button -->
+            <Button
+                android:id="@+id/btnClearCanvas"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Clear All"
+                android:textColor="#FFFFFF"
+                android:textSize="11sp"
+                android:paddingHorizontal="12dp"
+                android:background="@drawable/button_secondary" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- Beautiful Empty State Onboarding View -->
+    <LinearLayout
+        android:id="@+id/emptyStateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="32dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/ic_cube_3d"
+            android:contentDescription="Empty Space Icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Workspace Canvas Empty"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load high-fidelity 3D models into your space. Arrange, resize, and interact with each model independently."
+            android:textColor="#A0FFFFFF"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="24dp" />
+
+        <Button
+            android:id="@+id/btnEmptyStateAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="Explore 3D Library"
+            android:textColor="#0A0E17"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/button_gradient" />
+    </LinearLayout>
+
+    <!-- Collapsible Horizontal Scrollable Models Dashboard -->
+    <LinearLayout
+        android:id="@+id/dashboardPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bundled 3D Asset Library"
+                android:textColor="#00E5FF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="GLB Formats"
+                android:textColor="#80FFFFFF"
+                android:textSize="11sp" />
+        </RelativeLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <!-- Card 1: Cigarette -->
+                <LinearLayout
+                    android:id="@+id/cardCigarette"
+                    android:layout_width="128dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/card_background"
+                    android:layout_marginEnd="12dp"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_cube_3d" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cigarette"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.8 MB"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="10sp"
+                        android:layout_marginTop="2dp" />
+
+                    <Button
+                        android:id="@+id/btnAddCigarette"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:text="Add"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:background="@drawable/button_secondary"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!-- Card 2: Dragoon -->
+                <LinearLayout
+                    android:id="@+id/cardDragoon"
+                    android:layout_width="128dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/card_background"
+                    android:layout_marginEnd="12dp"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_cube_3d" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dragoon"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4.2 MB"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="10sp"
+                        android:layout_marginTop="2dp" />
+
+                    <Button
+                        android:id="@+id/btnAddDragoon"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:text="Add"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:background="@drawable/button_secondary"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!-- Card 3: Pokemon Cap -->
+                <LinearLayout
+                    android:id="@+id/cardPokemonCap"
+                    android:layout_width="128dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/card_background"
+                    android:layout_marginEnd="12dp"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_cube_3d" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Masters Cap"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3.2 MB"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="10sp"
+                        android:layout_marginTop="2dp" />
+
+                    <Button
+                        android:id="@+id/btnAddPokemonCap"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:text="Add"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:background="@drawable/button_secondary"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!-- Card 4: Shoes -->
+                <LinearLayout
+                    android:id="@+id/cardShoes"
+                    android:layout_width="128dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/card_background"
+                    android:layout_marginEnd="12dp"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_cube_3d" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Futuristic Shoes"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3.3 MB"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="10sp"
+                        android:layout_marginTop="2dp" />
+
+                    <Button
+                        android:id="@+id/btnAddShoes"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:text="Add"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:background="@drawable/button_secondary"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+                <!-- Card 5: Steampunk Glasses -->
+                <LinearLayout
+                    android:id="@+id/cardGlasses"
+                    android:layout_width="128dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:background="@drawable/card_background"
+                    android:layout_marginEnd="4dp"
+                    android:padding="8dp">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_cube_3d" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Retro Glasses"
+                        android:textColor="#FFFFFF"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3.8 MB"
+                        android:textColor="#80FFFFFF"
+                        android:textSize="10sp"
+                        android:layout_marginTop="2dp" />
+
+                    <Button
+                        android:id="@+id/btnAddGlasses"
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp"
+                        android:text="Add"
+                        android:textColor="#FFFFFF"
+                        android:textSize="10sp"
+                        android:background="@drawable/button_secondary"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+</RelativeLayout>
